@@ -1,9 +1,8 @@
 import click
 
+from configuration import configuration_for_vertical
 from reporters import get_reporter
 from analyzers import CommitAnalyzer
-
-global reporter
 
 @click.group()
 def cli():
@@ -39,10 +38,11 @@ def analyze():
 def commits(vertical, reporter):
   """Analyzes changes in commits"""
 
+  config = configuration_for_vertical(vertical)
   reporter = get_reporter(reporter)
-
   analyzer = CommitAnalyzer(reporter)
-  analyzer.analyze(["mt-web", "drive"])
+
+  analyzer.analyze(**config['analyzers']['commits'])
 
 @click.command()
 @click.argument('vertical')
