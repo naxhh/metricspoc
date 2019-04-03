@@ -32,12 +32,14 @@ def analyze():
 @click.argument('vertical')
 @click.option('--reporter', default='console', help='where to report the data')
 def commits(vertical, reporter):
+  """Analyzes changes in commits"""
   click.echo('Reporting commits of %s to %s' % vertical, reporter)
 
 @click.command()
 @click.argument('vertical')
 @click.option('--reporter', default='console', help='where to report the data')
 def endpoints(vertical, reporter):
+  """Analyzes number of endpoints"""
   click.echo('Reporting endpoints of %s to %s' % vertical, reporter)
 
 analyze.add_command(commits)
@@ -45,6 +47,3 @@ analyze.add_command(endpoints)
 
 cli.add_command(sources)
 cli.add_command(analyze)
-
-if __name__ == '__main__':
-  cli()

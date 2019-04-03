@@ -3,8 +3,8 @@
 ## Usage
 
 ```
-$ metrics-poc repos --tenant=motor
-$ metrics-poc line-report --tenant=motor --reporter=datadog/console
+$ metrics repos --tenant=motor
+$ metrics line-report --tenant=motor --reporter=datadog/console
 ```
 
 ## Dev
@@ -12,4 +12,8 @@ $ metrics-poc line-report --tenant=motor --reporter=datadog/console
 ```
 $ virtualenv -p python3 venv
 $ source venv/bin/activate
+
+$ pip install --editable .
+
+$ metrics ...
 ```
