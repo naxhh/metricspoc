@@ -1,5 +1,10 @@
 import click
 
+from reporters import get_reporter
+from analyzers import CommitAnalyzer
+
+global reporter
+
 @click.group()
 def cli():
   pass
@@ -12,13 +17,13 @@ def sources():
 @click.argument('vertical')
 def get(vertical):
   """Retrieves the source code to be analyzed"""
-  click.echo('Retrieving sources for %s' % name)
+  click.echo('Retrieving sources for %s' % vertical)
 
 @click.command()
 @click.argument('vertical')
 def delete(vertical):
   """Erase the source code"""
-  click.echo('Erasing sources for %s' % name)
+  click.echo('Erasing sources for %s' % vertical)
 
 sources.add_command(get)
 sources.add_command(delete)
@@ -33,7 +38,11 @@ def analyze():
 @click.option('--reporter', default='console', help='where to report the data')
 def commits(vertical, reporter):
   """Analyzes changes in commits"""
-  click.echo('Reporting commits of %s to %s' % vertical, reporter)
+
+  reporter = get_reporter(reporter)
+
+  analyzer = CommitAnalyzer(reporter)
+  analyzer.analyze(["mt-web", "drive"])
 
 @click.command()
 @click.argument('vertical')

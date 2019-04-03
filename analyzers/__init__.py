@@ -1,0 +1,1 @@
+from analyzers.CommitAnalyzer import CommitAnalyzer
