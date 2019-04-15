@@ -2,10 +2,13 @@
 def motor():
   return {
     'analyzers': {
-      'commits': {
-        'repositories': [
-          'mt-web',
-          'drive'
+      'endpoints': {
+        'projects': [
+          {
+            'type': 'c#',
+            'name': 'Automotive',
+            'folder': 'repos/mt-web/MOT_ESP_R1/Automotive/Controllers'
+          }
         ]
       }
     }
