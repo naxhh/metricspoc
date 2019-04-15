@@ -1,4 +1,4 @@
-# metrics-poc
+# metricspoc
 
 ## Usage
 
