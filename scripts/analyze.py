@@ -16,9 +16,13 @@ def endpoints(vertical, reporter):
 
   config = configuration_for_vertical(vertical)
   reporter = get_reporter(reporter)
-  analyzer = EndpointsAnalyzer(reporter)
+  analyzer = EndpointsAnalyzer()
 
-  analyzer.analyze(**config['analyzers']['endpoints'])
+  try:
+    result = analyzer.analyze(**config['analyzers']['endpoints'])
+    reporter.report('endpoints', result)
+  except Exception as err:
+    reporter.error(err)
 
 
 analyze.add_command(endpoints)

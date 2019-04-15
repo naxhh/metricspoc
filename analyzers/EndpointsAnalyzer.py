@@ -1,23 +1,21 @@
 import os
 import re
-import json
+
+from entities.EndpointProject import EndpointProject
+from entities.EndpointMethod import EndpointMethod
+from entities.EndpointParam import EndpointParam
 
 class EndpointsAnalyzer:
-  def __init__(self, reporter):
-    self.reporter = reporter
-
   def analyze(self, projects):
     analyzed_projects = []
 
     for project in projects:
       if project['type'] != 'c#':
-        self.reporter.error("Type '%s' for project is invalid " % project['type'])
-        return
+        raise Exception("Type '%s' for project is invalid " % project['type'])
 
       project = self._process_project(project['name'], project['folder'])
 
       analyzed_projects.append(project)
-      print(project.toJson())
 
     return analyzed_projects
   def _process_project(self, project_name, controllers_folder):
@@ -92,44 +90,3 @@ class EndpointsAnalyzer:
       params.append(EndpointParam(param_type, param_name))
 
     return params
-
-class JsonSerializable(object):
-  def toJson(self):
-      return json.dumps(self.__dict__, default=lambda o: o.__dict__)
-
-  def __repr__(self):
-      return self.toJson()
-
-class EndpointProject(JsonSerializable):
-  def __init__(self, project, endpoints):
-    self.project = project
-    self.endpoints = endpoints
-
-  def __str__(self):
-    return ('EndpointProject(%s, %s)' % (
-      self.project,
-      [str(endpoint) for endpoint in self.endpoints]
-    ))
-
-class EndpointMethod(JsonSerializable):
-  def __init__(self, response, clazz, method, params):
-    self.clazz = clazz
-    self.method = method
-    self.params = params
-    self.response = response
-
-  def __str__(self):
-    return ('EndpointMethod(%s, %s, %s, %s)' % (
-      self.response,
-      self.clazz,
-      self.method,
-      [str(param) for param in self.params]
-    ))
-
-class EndpointParam(JsonSerializable):
-  def __init__(self, type, name):
-    self.type = type
-    self.name = name
-
-  def __str__(self):
-    return ('EndpointParam(%s, %s)' % (self.type, self.name))

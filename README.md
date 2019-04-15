@@ -25,17 +25,27 @@ $ metrics --help
 The analyzers are in charge of retrieving the data from different sources.
 Here is where you would call the Github API or Datadog API to **retrieve** data.
 
-The final data will be converted to a data object.
+The final data will be converted to a data object from **entities** and returned.
+
+### Entities
+
+Objects that represent data, they don't have any behaviour and are JSON serializable.
+
 
 ### Reporters
 
-Reportes receive a data object and persist that data into a backend.
-For development a console reporter will just display the information into the console
-To gather metrics a Datadog reporter is also usefull.
+Reporters receive an entity, they convert that entity to the value they want to report.
+For example:
 
-Other examples could be kafka reporter or an SQL reporter
+The console reporter always dumps the json as it is.
+The Datadog reporter sums the number of endpoints for the *endpoints* analyzer and only reports that.
 
 ### Scripts
 
 Here is where all the commands of the cli are configured.
 They act as the entry point of the reporters, `cli.py` is the main command and all the sub-commands are in a separate file.
+
+
+## Tests
+
+Pending to define
