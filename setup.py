@@ -1,14 +1,15 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
-    name='metrics',
+    name='metricspoc',
     version='0.1',
-    py_modules=['metrics'],
+    packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'Click',
     ],
     entry_points='''
         [console_scripts]
-        metrics=metrics:cli
+        metrics=scripts.cli:cli
     ''',
 )
