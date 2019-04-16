@@ -10,7 +10,7 @@ class DatadogReporter:
 
     def error(self, error_message):
         """This method allows us to report an error, other reporters may just raise the exception"""
-        click.secho(str(error_message), err=True, bg='red')
+        click.echo(str(error_message))
 
     # Data is a List<EndpointProject>
     def report_endpoints(self, data):

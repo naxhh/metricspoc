@@ -83,9 +83,6 @@ class EndpointsAnalyzer:
         dirty_params = raw_params.split(',')
 
         for dirt_param in dirty_params:
-            if dirt_param == '':
-                continue
-
             match = re.search(params_regex, dirt_param.strip())
 
             param_type = match.group(1)

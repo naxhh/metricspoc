@@ -6,8 +6,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Click==7.0',
-        'colorama==0.4.1'
+        'Click==7.0'
     ],
     entry_points='''
         [console_scripts]
