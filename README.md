@@ -24,6 +24,10 @@ $ source venv/bin/activate
 
 $ pip install --editable .
 $ metrics --help
+
+
+# If you want to get coverage report in html run
+$ tox -e cov
 ```
 
 ## Project structure

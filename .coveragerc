@@ -1,0 +1,12 @@
+[run]
+branch = True
+
+omit =
+  # No tox virtual envs
+  .tox/*
+  # No venv
+  venv/*
+  # No test files themselves
+  test/*
+  # Not the setup file
+  setup.py
