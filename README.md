@@ -3,6 +3,7 @@
 ## Usage
 
 ```
+$ metrics --help
 $ metrics repos --tenant=motor
 $ metrics line-report --tenant=motor --reporter=datadog/console
 ```
@@ -10,11 +11,18 @@ $ metrics line-report --tenant=motor --reporter=datadog/console
 ## Dev
 
 ```
+# Without creating any venv!
+$ pip install tox
+
+# This will run codestyle and tests
+$ tox
+
+
+# If you want to run the application in local
 $ virtualenv -p python3 venv
 $ source venv/bin/activate
 
 $ pip install --editable .
-
 $ metrics --help
 ```
 

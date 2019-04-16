@@ -1,3 +1,11 @@
+# App specific
+repos/
+
+# Packing and venv
+.tox
 venv
 *.egg-info
-repos/
+
+# Coverage
+*.xml
+.coverage
