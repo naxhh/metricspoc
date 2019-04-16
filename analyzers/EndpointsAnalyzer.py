@@ -5,88 +5,92 @@ from entities.EndpointProject import EndpointProject
 from entities.EndpointMethod import EndpointMethod
 from entities.EndpointParam import EndpointParam
 
+
 class EndpointsAnalyzer:
-  def analyze(self, projects):
-    analyzed_projects = []
 
-    for project in projects:
-      if project['type'] != 'c#':
-        raise Exception("Type '%s' for project is invalid " % project['type'])
+    def analyze(self, projects):
+        analyzed_projects = []
 
-      project = self.__process_project(project['name'], project['folder'])
+        for project in projects:
+            if project['type'] != 'c#':
+                raise Exception("Type '%s' for project is invalid " % project['type'])
 
-      analyzed_projects.append(project)
+            project = self.__process_project(project['name'], project['folder'])
 
-    return analyzed_projects
-  def __process_project(self, project_name, controllers_folder):
-    controller_files = os.listdir(controllers_folder)
+            analyzed_projects.append(project)
 
-    all_endpoints = []
+        return analyzed_projects
 
-    for controller in controller_files:
-      methods = self.__get_methods("%s/%s" % (controllers_folder, controller))
-      endpoints = self.__convert_to_endpoints(controller.strip('.cs'), methods)
+    def __process_project(self, project_name, controllers_folder):
+        controller_files = os.listdir(controllers_folder)
 
-      all_endpoints += endpoints
+        all_endpoints = []
 
-    return EndpointProject(project_name, all_endpoints)
+        for controller in controller_files:
+            methods = self.__get_methods("%s/%s" % (controllers_folder, controller))
+            endpoints = self.__convert_to_endpoints(controller.strip('.cs'), methods)
 
-  def __get_methods(self, file_path):
-    with open(file_path) as file:
-      file_content = [x.strip() for x in file.readlines()]
+            all_endpoints += endpoints
 
-    public_accesors = [line for line in file_content if line.startswith('public ') and 'class' not in line]
+        return EndpointProject(project_name, all_endpoints)
 
-    return public_accesors
+    def __get_methods(self, file_path):
+        with open(file_path) as file:
+            file_content = [x.strip() for x in file.readlines()]
 
-  def __convert_to_endpoints(self, controller, accessors):
-    # This regex retrieves 3 groups
-    # group 1: Return object
-    # group 2: method name
-    # group 3: params (optional)
-    method_regex = r'public ([^ ]+) ([^ ]+)\(([^\)]+)?\)'
+        public_accesors = [line for line in file_content if line.startswith(
+            'public ') and 'class' not in line]
 
-    endpoints = []
+        return public_accesors
 
-    for line in accessors:
-      match = re.search(method_regex, line)
+    def __convert_to_endpoints(self, controller, accessors):
+        # This regex retrieves 3 groups
+        # group 1: Return object
+        # group 2: method name
+        # group 3: params (optional)
+        method_regex = r'public ([^ ]+) ([^ ]+)\(([^\)]+)?\)'
 
-      if match is None:
-        continue
+        endpoints = []
 
-      response = match.group(1)
-      method = match.group(2)
-      raw_params = match.group(3)
+        for line in accessors:
+            match = re.search(method_regex, line)
 
-      endpoints.append(
-        EndpointMethod(response, controller, method, self.__convert_params(raw_params))
-      )
+            if match is None:
+                continue
 
-    return endpoints
+            response = match.group(1)
+            method = match.group(2)
+            raw_params = match.group(3)
 
-  def __convert_params(self, raw_params):
-    # This regex retrieves 2 groups but captures 3
-    # group 1: Metadata like [FromBody]
-    # group 2: param type
-    # group 3: param name
-    params_regex = r'(?:\[[^ ]+\])? ?([^ ]+) ([^ ]+)'
+            endpoints.append(
+                EndpointMethod(response, controller, method, self.__convert_params(raw_params))
+            )
 
-    params = []
+        return endpoints
 
-    if raw_params is None:
-      return params
+    def __convert_params(self, raw_params):
+        # This regex retrieves 2 groups but captures 3
+        # group 1: Metadata like [FromBody]
+        # group 2: param type
+        # group 3: param name
+        params_regex = r'(?:\[[^ ]+\])? ?([^ ]+) ([^ ]+)'
 
-    dirty_params = raw_params.split(',')
+        params = []
 
-    for dirt_param in dirty_params:
-      if dirt_param == '':
-        continue
+        if raw_params is None:
+            return params
 
-      match = re.search(params_regex, dirt_param.strip())
+        dirty_params = raw_params.split(',')
 
-      param_type = match.group(1)
-      param_name = match.group(2)
+        for dirt_param in dirty_params:
+            if dirt_param == '':
+                continue
 
-      params.append(EndpointParam(param_type, param_name))
+            match = re.search(params_regex, dirt_param.strip())
 
-    return params
+            param_type = match.group(1)
+            param_name = match.group(2)
+
+            params.append(EndpointParam(param_type, param_name))
+
+        return params
