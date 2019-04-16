@@ -17,7 +17,7 @@ def endpoints(vertical, reporter):
     """Analyzes the number of endpoints"""
 
     config = configuration_for_vertical(vertical)
-    reporter = get_reporter(reporter)
+    reporter = get_reporter(reporter, vertical)
     analyzer = EndpointsAnalyzer()
 
     try:

@@ -6,7 +6,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Click==7.0'
+        'Click==7.0',
+        'datadog==0.28.0'
     ],
     entry_points='''
         [console_scripts]

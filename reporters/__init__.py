@@ -2,8 +2,8 @@ from reporters.ConsoleReporter import ConsoleReporter
 from reporters.DatadogReporter import DatadogReporter
 
 
-def get_reporter(reporter):
+def get_reporter(reporter, vertical):
     if reporter == 'datadog':
-        return DatadogReporter()
+        return DatadogReporter(vertical)
     else:
         return ConsoleReporter()

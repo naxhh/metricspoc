@@ -8,13 +8,17 @@ $ metrics repos --tenant=motor
 $ metrics line-report --tenant=motor --reporter=datadog/console
 ```
 
+### Datadog reporter
+
+The datadog reporter requires `DATADOG_API_KEY` and `DATADOG_APP_KEY` environmentals in order to report values to datadog
+
 ## Dev
 
 ```
 # Without creating any venv!
 $ pip install tox
 
-# This will run codestyle and tests
+# This will run codestyle and tests on its own venv
 $ tox
 
 
